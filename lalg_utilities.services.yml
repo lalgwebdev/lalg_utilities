@@ -1,0 +1,4 @@
+services:
+  lalg_utilities.group_tasks:
+    class:  Drupal\lalg_utilities\Services\GroupTasks
+    arguments: ['@entity_type.manager']

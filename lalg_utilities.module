@@ -1,0 +1,28 @@
+<?php
+
+use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+use Drupal\group\Entity\GroupContent;
+
+/**
+ * Alter the generated link data before a sitemap is saved.
+ *
+ * This hook gets invoked for every sitemap chunk generated.
+ *
+ * @param array &$links
+ *   Array containing links generated for each path to be indexed.
+ * @param SimpleSitemapInterface $sitemap
+ *   Sitemap entity.
+ */
+function lalg_utilities_simple_sitemap_links_alter(array &$links, SimpleSitemapInterface $sitemap) {
+ 
+  foreach ($links as $key => $link) {
+	if (isset($link['meta']['entity_info'])) {
+		$gid = $link['meta']['entity_info']['id'];
+		$archived = \Drupal::service('lalg_utilities.group_tasks')->isGroupArchived($gid);
+        $hidden = \Drupal::service('lalg_utilities.group_tasks')->isGroupHidden($gid);
+		if ($archived || $hidden) {
+		  unset($links[$key]);
+		}
+	}
+  }
+}
