@@ -26,3 +26,14 @@ function lalg_utilities_simple_sitemap_links_alter(array &$links, SimpleSitemapI
 	}
   }
 }
+
+/**
+ * Disable the Contact Details Text field - but still keep visible for now.
+ *
+ */
+function lalg_utilities_form_alter(&$form, &$form_state, $form_id) {
+
+  if ($form_id == 'group_group_edit_form') {
+	  $form['field_contact_details']['#disabled'] = TRUE;
+  }
+}
