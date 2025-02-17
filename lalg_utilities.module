@@ -17,11 +17,13 @@ function lalg_utilities_simple_sitemap_links_alter(array &$links, SimpleSitemapI
  
   foreach ($links as $key => $link) {
 	if (isset($link['meta']['entity_info'])) {
-		$gid = $link['meta']['entity_info']['id'];
-		$archived = \Drupal::service('lalg_utilities.group_tasks')->isGroupArchived($gid);
-        $hidden = \Drupal::service('lalg_utilities.group_tasks')->isGroupHidden($gid);
-		if ($archived || $hidden) {
-		  unset($links[$key]);
+		if ($link['meta']['entity_info']['entity_type'] == "group") {
+			$gid = $link['meta']['entity_info']['id'];
+			$archived = \Drupal::service('lalg_utilities.group_tasks')->isGroupArchived($gid);
+			$hidden = \Drupal::service('lalg_utilities.group_tasks')->isGroupHidden($gid);
+			if ($archived || $hidden) {
+			  unset($links[$key]);
+			}
 		}
 	}
   }
